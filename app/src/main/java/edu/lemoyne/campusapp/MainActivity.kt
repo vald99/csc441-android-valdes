@@ -83,7 +83,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .padding(24.dp)
     ) {
-        CounterDemo()
+//        CounterDemo()
         // --- Lab 6: Task 3: a picture of my own ---
         Image(
             painter = painterResource(id = R.drawable.smiley),
