@@ -12,12 +12,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,16 +48,42 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// --- Class 7: Step 1: a counter that remembers ---
+@Composable
+fun CounterDemo() {
+    var count by remember { mutableStateOf(0) }
+
+    Button(
+        onClick = { count++ }
+    ) {
+        Text(text = "Tapped $count times")
+
+    }
+}
+
 
 // --- Class 6: Step 1: my own screen ---
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    // --- Class 7: Step 2: the list lives in state
+    val welcomeMessages = remember {
+        mutableStateListOf(
+            "Try out one of our various testing suites!",
+            "These aid in the testing of optimal performance.",
+            "You may find that some features function differently than expected."
+        )
+    }
+
+    // --- CLass 7: Step 3: what's typed lives in state ---
+    var newMessage by remember { mutableStateOf("") }
+
     // --- Class 6: Step 3: a column, so things stack ---
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp)
     ) {
+        CounterDemo()
         // --- Lab 6: Task 3: a picture of my own ---
         Image(
             painter = painterResource(id = R.drawable.smiley),
@@ -76,14 +110,35 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
+        // --- Class 7: Step 3: the text field ---
+        OutlinedTextField(
+            value = newMessage,
+            onValueChange = { newMessage = it },
+            label = { Text("Message") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // --- Class 7: Step 4: the button changes the state ---
+        Button(onClick =  {
+            welcomeMessages.add(newMessage)
+            newMessage = ""
+        }) {
+            Text("Add message")
+        }
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = "Try out one of our various testing suites!", fontSize = 18.sp)
-        Text(text = "These aid in the testing of optimal performance.", fontSize = 18.sp)
-        Text(text = "You may find that some features function differently than expected.", fontSize = 18.sp)
-
         // Lab 6: Task 1: Make the screen properly yours.
-        Text(text = "No pressure though. \uD83D\uDC4D")
+        Text(text = "Here's all the messages: ")
+
+        Text(
+            text = "${welcomeMessages.size} messages: ",
+            fontWeight = FontWeight.Bold
+        )
+
+        for (message in welcomeMessages) {
+            Text(text = message, fontSize = 18.sp)
+        }
 
         // Lab 6: Task 2: footer ---
         Spacer(modifier = Modifier.height(24.dp))
