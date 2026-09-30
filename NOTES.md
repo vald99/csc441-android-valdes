@@ -6,3 +6,8 @@
 ### Week 5, Friday. 
 *Change one Modifier on your Column — the padding number, or swap .fillMaxWidth() for .fillMaxSize(). Write down what you changed and what happened to the screen. One or two sentences.*
 Changing the padding number from 24 to 20 made the text and header image get slightly closer to the borders of the screen. Swapping `.fillMaxWidth` for `.fillMaxSize` had no noticable effect on the text formatting.
+
+### Week 6, Wednesday.
+1. **Paste the logcat lines from your broken counter.**  18:39:22.546  E  FATAL EXCEPTION: main
+2. **In your own words, why did count change but the screen didn't?** I believe the variable was changing in the background, but since the variable wasn't part of the screen state, the screen didn't know to update it, so it stayed as 0.
+3. **What does remember do? What would happen without it?** Remember is adding the count variable to the state, and if we don't add it then the activity will only display the count variable as it was when it was initially copied.

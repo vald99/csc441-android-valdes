@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -118,6 +119,17 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // --- Lab 7: Task 4: a live character counter ---
+        Text(
+            text = "${newMessage.length} / 40",
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         // --- Class 7: Step 4: the button changes the state ---
         Button(onClick =  {
             welcomeMessages.add(newMessage)
@@ -128,11 +140,29 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // --- Lab 7: Task 1: remove the last item ---
+        Button(onClick = {
+//            if (welcomeMessages.isNotEmpty()) {
+                welcomeMessages.removeAt(welcomeMessages.lastIndex)
+//            }
+        }) {
+            Text("Remove last")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(onClick = {
+            welcomeMessages.clear()
+        }) {
+            Text("Clear")
+        }
+
         // Lab 6: Task 1: Make the screen properly yours.
         Text(text = "Here's all the messages: ")
 
         Text(
-            text = "${welcomeMessages.size} messages: ",
+            // Lab 7: Task 2: singular and plural ---
+            text = if (welcomeMessages.size == 1) {"1 message: "} else "${welcomeMessages.size} messages",
             fontWeight = FontWeight.Bold
         )
 
