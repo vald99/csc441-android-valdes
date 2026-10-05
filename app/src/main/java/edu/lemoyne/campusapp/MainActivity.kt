@@ -213,8 +213,12 @@ fun validateMessage(input: String, existingMessages: List<String>): String? {
     val message = input.trim()
     return when {
         message.isEmpty() -> "Enter a message"
+        // --- Lab 8: Task 1: minimum length ---
+        message.length < 3 -> "Too short — at least 3 characters"
         message.length > MAX_MESSAGE_LENGTH -> "Keep it to $MAX_MESSAGE_LENGTH characters or less"
         existingMessages.any { it.equals( message, ignoreCase = true) } -> "$message is already on the list"
+        // --- Lab 8: Task 2: my own rule ---
+        !message.first().isLetter() -> "Message must start with a letter!"
         else -> null
     }
 }
