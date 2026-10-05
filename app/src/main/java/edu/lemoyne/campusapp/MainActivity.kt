@@ -77,6 +77,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     // --- CLass 7: Step 3: what's typed lives in state ---
     var newMessage by remember { mutableStateOf("") }
+    // --- Class 8: Step 2: the error message lives in state too ---
+    var error by remember { mutableStateOf<String?>(null)}
 
     // --- Class 6: Step 3: a column, so things stack ---
     Column(
@@ -114,8 +116,14 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         // --- Class 7: Step 3: the text field ---
         OutlinedTextField(
             value = newMessage,
-            onValueChange = { newMessage = it },
+            // --- Class 8: Step 3: the field itself pushes back ---
+            onValueChange = {
+                newMessage = it.take(n = MAX_MESSAGE_LENGTH)
+                error = null
+            },
             label = { Text("Message") },
+            singleLine = true,
+            isError = error != null,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -130,11 +138,28 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        error?.let { errorMessage ->
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp
+            )
+        }
+
         // --- Class 7: Step 4: the button changes the state ---
         Button(onClick =  {
-            welcomeMessages.add(newMessage)
-            newMessage = ""
-        }) {
+            // --- Class 8: Step 3: check before you add ---
+            val problem = validateMessage(input = newMessage, existingMessages = welcomeMessages)
+            if (problem == null) {
+                welcomeMessages.add(newMessage)
+                newMessage = ""
+            } else {
+                error = problem
+            }
+        },
+            // --- Class 8: Step 4: the sign on the door, not the lock ---
+            enabled = newMessage.isNotBlank()
+            ) {
             Text("Add message")
         }
 
@@ -142,9 +167,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         // --- Lab 7: Task 1: remove the last item ---
         Button(onClick = {
-//            if (welcomeMessages.isNotEmpty()) {
+            if (welcomeMessages.isNotEmpty()) {
                 welcomeMessages.removeAt(welcomeMessages.lastIndex)
-//            }
+            }
         }) {
             Text("Remove last")
         }
@@ -178,6 +203,23 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+const val MAX_MESSAGE_LENGTH = 30
+
+// --- Class 8: Step 1: one rulebook for message names ---
+fun validateMessage(input: String, existingMessages: List<String>): String? {
+    val message = input.trim()
+    return when {
+        message.isEmpty() -> "Enter a message"
+        // --- Lab 8: Task 1: minimum length ---
+        message.length < 3 -> "Too short — at least 3 characters"
+        message.length > MAX_MESSAGE_LENGTH -> "Keep it to $MAX_MESSAGE_LENGTH characters or less"
+        existingMessages.any { it.equals( message, ignoreCase = true) } -> "$message is already on the list"
+        // --- Lab 8: Task 2: my own rule ---
+        !message.first().isLetter() -> "Message must start with a letter!"
+        else -> null
     }
 }
 
