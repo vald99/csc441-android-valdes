@@ -213,7 +213,7 @@ fun ListScreen(
     modifier: Modifier = Modifier
 ) {
     // --- Class 9: Step 6: the phone's back button goes home too ---
-    BackHandler { onBack }
+    BackHandler { onBack() }
     Column(
         modifier = modifier
             .fillMaxWidth()
