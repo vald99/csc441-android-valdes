@@ -1,6 +1,7 @@
 package edu.lemoyne.campusapp
 
 import android.content.res.Configuration
+import android.widget.Space
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -63,10 +64,17 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
         "home" -> HomeScreen(
             welcomeMessages = welcomeMessages,
             onAddMessage = {welcomeMessages.add(it)},
-            onSeeAll = { currentScreen = "list" }
+            onSeeAll = { currentScreen = "list" },
+            // --- Lab 9: Task 2: pass onAbout case ---
+            onAbout = { currentScreen = "about" }
         )
         "list" -> ListScreen(
             welcomeMessages = welcomeMessages,
+            onBack = { currentScreen = "home" },
+            modifier = modifier
+        )
+        // --- Lab 9: Task 2: add about case ---
+        "about" -> AboutScreen(
             onBack = { currentScreen = "home" },
             modifier = modifier
         )
@@ -79,6 +87,8 @@ fun HomeScreen(
     welcomeMessages: MutableList<String>,
     onAddMessage: (String) -> Unit,
     onSeeAll: () -> Unit,
+    // --- Lab 9: Task 2: give home screen new parameter ---
+    onAbout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // --- CLass 7: Step 3: what's typed lives in state ---
@@ -192,6 +202,13 @@ fun HomeScreen(
             Text(text = "See all messages")
         }
 
+        Spacer (modifier = Modifier.height(8.dp))
+
+        // --- Lab 9: Task 2: text button that calls onAbout ---
+        TextButton(onClick = onAbout) {
+            Text("About")
+        }
+
         // Lab 6: Task 2: footer ---
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -232,9 +249,47 @@ fun ListScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // --- Lab 9: Task 1: count on the list screen
+        Text(
+            text = if (welcomeMessages.size == 1) {"1 message: "} else "${welcomeMessages.size} messages",
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         for (message in welcomeMessages) {
             Text(text = message, fontSize = 18.sp)
         }
+    }
+}
+
+// --- Lab 9: Task 2: a third screen ---
+@Composable
+fun AboutScreen(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BackHandler { onBack() }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(24.dp)
+    ) {
+        TextButton(onClick = onBack) {
+            Text("Back")
+        }
+
+        Text(
+            text = "About",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Lab App features a cool variety of tools. Only messages are implemented thus far.")
+        Text(text = "Built by Yandel Valdes for CSC441")
     }
 }
 
@@ -268,7 +323,9 @@ fun HomeScreenPreview() {
                     "You may find that some features function differently than expected.")
             },
             onAddMessage = {},
-            onSeeAll = {}
+            onSeeAll = {},
+            // Lab 9: Task 2: adding onAbout to home screen preview
+            onAbout = {}
         )
     }
 }
@@ -303,7 +360,9 @@ fun HomeScreenDarkPreview() {
                     "You may find that some features function differently than expected.")
             },
                 onAddMessage = {},
-                onSeeAll = {}
+                onSeeAll = {},
+                // Lab 9: Task 2: adding onAbout to home screen preview
+                onAbout = {}
             )
         }
     }
