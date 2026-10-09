@@ -25,3 +25,8 @@ Changing the padding number from 24 to 20 made the text and header image get sli
 | hello                               | Added to list (alphabetical start character) | yes      |
 | ( ͡° ͜ʖ ͡°)                         | Failed to add (non-alpha start charcter)     | yes      |
 | HELLOHELLOHELLOHELLOHELLOHELLO      | Added (couldn't type more hellos)            | yes      |
+
+### Week 7, Wednesday.
+1. **After rotating, which screen were you on?** After rotating, I was still on the list screen.
+2. **Were your two new items still there?** No, they disappeared and the count went back to 3.
+3. **Look at how currentScreen and welcomeMessages are created in CampusAppScreen. Explain the difference in one or two sentences.** Both currentScreen and welcomeMessages are created with the remember flags, but the currentScreen variable has a 'Saveable' portion added to it. I'm not entirely sure what it's doing for us, but I assume it has to do with it being able to keep the screen when rotating, while the list refreshes.
