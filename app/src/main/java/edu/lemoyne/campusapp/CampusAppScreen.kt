@@ -109,7 +109,7 @@ fun HomeScreen(
     onAbout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // --- CLass 7: Step 3: what's typed lives in state ---
+    // --- Class 7: Step 3: what's typed lives in state ---
     var newMessage by remember { mutableStateOf("") }
     // --- Class 8: Step 2: the error message lives in state too ---
     var error by remember { mutableStateOf<String?>(null)}
@@ -165,7 +165,7 @@ fun HomeScreen(
 
         // --- Lab 7: Task 4: a live character counter ---
         Text(
-            text = "${newMessage.length} / 40",
+            text = "${newMessage.length} / $MAX_MESSAGE_LENGTH",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
