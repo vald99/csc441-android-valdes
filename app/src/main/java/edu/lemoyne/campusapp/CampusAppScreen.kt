@@ -87,6 +87,8 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onBack = { currentScreen = "home" },
             // --- Class 10: Step 4: only the owner changes the list ---
             onRemove = { welcomeMessages.remove(it) },
+            // --- Lab 10: Task 2: remove all, through the owner ---
+            onRemoveAll = { welcomeMessages.clear() },
             modifier = modifier
         )
         // --- Lab 9: Task 2: add about case ---
@@ -246,6 +248,7 @@ fun ListScreen(
     welcomeMessages: List<String>,
     onBack: () -> Unit,
     onRemove: (String) -> Unit,
+    onRemoveAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // --- Class 9: Step 6: the phone's back button goes home too ---
@@ -274,6 +277,13 @@ fun ListScreen(
             fontWeight = FontWeight.Bold
         )
 
+        // --- Lab 10: Task 2: remove all, through the owner ---
+        if (welcomeMessages.isNotEmpty()) {
+            TextButton(onClick = onRemoveAll) {
+                Text("Remove all")
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
 //        for (message in welcomeMessages) {
@@ -285,6 +295,12 @@ fun ListScreen(
                 text = "No messages yet. Add one on the home screen.",
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            // --- Lab 10: Task 1: a way out of the empty screen ---
+            TextButton(onClick = onBack) {
+                Text(text = "back")
+
+            }
         } else {
             // --- Class 10: Step 2: a list that scrolls ---
             LazyColumn(
@@ -405,7 +421,8 @@ fun ListScreenPreview() {
                     "You may find that some features function differently than expected.")
             },
             onBack = {},
-            onRemove = {}
+            onRemove = {},
+            onRemoveAll = {}
         )
     }
 }
@@ -418,7 +435,8 @@ fun ListScreenEmptyPreview() {
         ListScreen(
             welcomeMessages = emptyList(),
             onBack = {},
-            onRemove = {}
+            onRemove = {},
+            onRemoveAll = {}
         )
     }
 }
