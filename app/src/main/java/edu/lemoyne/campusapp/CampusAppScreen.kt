@@ -461,3 +461,13 @@ fun HomeScreenDarkPreview() {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun AboutScreenPreview() {
+    CampusAppTheme {
+        AboutScreen(
+            onBack = {}
+        )
+    }
+}
