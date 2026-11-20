@@ -102,6 +102,7 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
         // Class 21: Step 5: add navigation to your existing screen owner
         "supabase" -> InterestsScreen(
             onBack = { currentScreen = "home" },
+            onRefresh = onRefreshShowcase,
             modifier = modifier //TODO
         )
     }
