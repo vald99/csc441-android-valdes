@@ -1,6 +1,7 @@
 package edu.lemoyne.campusapp
 
 import android.content.res.Configuration
+import android.widget.Button
 import android.widget.Space
 import androidx.activity.compose.BackHandler
 import androidx.arch.core.internal.SafeIterableMap
@@ -80,7 +81,9 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onAddMessage = {welcomeMessages.add(it)},
             onSeeAll = { currentScreen = "list" },
             // --- Lab 9: Task 2: pass onAbout case ---
-            onAbout = { currentScreen = "about" }
+            onAbout = { currentScreen = "about" },
+            // Class 21: Step 5: add navigation to your EXISTING screen owner
+            onSupabase = { currentScreen = "supabase" }
         )
         "list" -> ListScreen(
             welcomeMessages = welcomeMessages,
@@ -96,6 +99,12 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onBack = { currentScreen = "home" },
             modifier = modifier
         )
+        // Class 21: Step 5: add navigation to your existing screen owner
+        "supabase" -> InterestsScreen(
+            onBack = { currentScreen = "home" },
+            onRefresh = onRefreshShowcase,
+            modifier = modifier //TODO
+        )
     }
 }
 
@@ -107,6 +116,8 @@ fun HomeScreen(
     onSeeAll: () -> Unit,
     // --- Lab 9: Task 2: give home screen new parameter ---
     onAbout: () -> Unit,
+    // Class 21: Step 5: add navigation to your existing screen owner
+    onSupabase: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     // --- Class 7: Step 3: what's typed lives in state ---
@@ -222,7 +233,9 @@ fun HomeScreen(
 
         Spacer (modifier = Modifier.height(8.dp))
 
+        Button(onClick = onSupabase) { Text("Open Supabase") }
 
+        Spacer (modifier = Modifier.height(8.dp))
 
         // --- Lab 9: Task 2: text button that calls onAbout ---
         TextButton(onClick = onAbout) {
